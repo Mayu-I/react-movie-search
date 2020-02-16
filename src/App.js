@@ -13,28 +13,13 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {}
-    // console.log("This is my initializer")
 
-    // const movies = [
-    //   { id: 0, poster_src: "https://image.tmdb.org/t/p/w185_and_h278_bestv2/eBzf9d09Vgq2HSVC4fIZm1QNQd.jpg", title: "Charlie's Angels", overview: "Three women, detectives with a mysterious boss, retrieve stolen voice-ID software, using martial arts, tech skills, and sex appeal." },
-    //   { id: 1, poster_src: "https://image.tmdb.org/t/p/w185_and_h278_bestv2/n4cdJ0Wqxb7C0HmZbcaC4eYnkIf.jpg", title: "Charlie's Angels: Full Throttle", overview: "The Angels are charged with finding a pair of missing rings that are encoded with the personal information of members of the Witness Protection Program. As informants are killed, the ladies target a rogue agent…" },
-    // ]
-
-    // let movieRows = []
-    // movies.forEach((movie) => {
-    //   console.log(movie.title)
-    //   const movieRow = <MovieRow movie={movie} />
-    //   movieRows.push(movieRow)
-    // })
-
-    // this.state = { rows: movieRows }
-
-    this.performSearch()
+    this.performSearch("17")
   }
 
   performSearch(searchTerm) {
     console.log("Perform search using moviedb")
-    const urlString = "https://api.themoviedb.org/3/search/movie?query=woman&api_key=6f1565dd9313119082ccef3c7286377d";
+    const urlString = "https://api.themoviedb.org/3/search/movie?api_key=6f1565dd9313119082ccef3c7286377d&query=" + searchTerm;
     $.ajax({
       url: urlString,
       success: (searchResults) => {
@@ -56,7 +41,11 @@ class App extends Component {
     })
   }
 
-
+  searchChangeHandler(event) {
+    const boundObject = this
+    const searchTerm = event.target.value
+    boundObject.performSearch(searchTerm)
+  }
 
   render() {
     return (
@@ -92,7 +81,8 @@ class App extends Component {
             paddingBottom: 8,
             paddingLeft: 16
           }}
-          placeholder="Enter Search Term" />
+          placeholder="Enter Search Term"
+          onChange={this.searchChangeHandler.bind(this)} />
 
         {this.state.rows}
 
